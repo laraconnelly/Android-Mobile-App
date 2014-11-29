@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"/>
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/cordova.js"></script>
+
 
 </head>
 
@@ -429,32 +431,17 @@
             </div>
 
             <div class="row">
+<script>
+                function onSuccess(heading) {
+                alert('Heading: ' + heading.magneticHeading);
+                };
 
-                <div class="col-md-4 col-sm-6">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                        but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
-                        in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                </div>
+                function onError(error) {
+                alert('CompassError: ' + error.code);
+                };
 
-                <div class="col-md-4 col-sm-6 ">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                        but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
-                        in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                        but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
-                        in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                </div>
+                navigator.compass.getCurrentHeading(onSuccess, onError);
+</script>
             </div>
             <!-- /content -->
 
@@ -465,6 +452,15 @@
         </div>
     </div>
     <!-- /page camera-->
+
+<script>
+    // github.com
+    // https://build.phonegap.com/people/sign_in
+        // new app...paste in link to phonegap folder
+    // in php storm...add/commit/push
+    // get phonegap js file for android (cordova)  put in js file.
+
+</script>
 
 <script>
 
