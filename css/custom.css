@@ -1,0 +1,53 @@
+img, iframe{
+    max-width: 100%;
+    padding: 1%;
+}
+
+.top-buffer {
+    margin-top: 3%;
+}
+
+form {
+    padding: 1%;
+    margin: 1%;
+}
+
+.line-separator{
+    height: 1%;
+    background: #717171;
+    border-bottom: 1px solid #12199C;
+}
+
+header h1{
+    font-family: "Lucida Handwriting", "Brush Script", cursive;
+}
+
+.container{
+    background-color: #D1E7EE;
+    padding: 5%;
+}
+
+footer {
+    color: #12199C;
+}
+
+.ui-menu {
+    width: 200px;
+}
+
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1em; height: 28px; }
+#sortable li span { position: absolute; margin-left: -1.3em; }
+
+.cart{
+    border: solid blue 2px;
+    padding: 10px;
+}
+
+.red {
+    color: red;
+}
+
+#buy {
+   /* display: none;*/
+}
