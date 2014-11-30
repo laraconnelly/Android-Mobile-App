@@ -8,7 +8,57 @@
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
    <script>
 
-       function alertDismissed() {
+       var pushNotification;
+
+       document.addEventListener('deviceready', onDeviceReady, true);
+
+       function onDeviceReady() {
+
+           try {
+               pushNotification = window.plugins.pushNotification;
+               if (device.platform == 'android' || device.platform == 'Android') {
+                   pushNotification.register(successHandler, errorHandler, { "senderID": "123456789", "ecb": "onNotificationGCM" });    // required!
+               }
+               else {
+                   pushNotification.register(tokenHandler, errorHandler, { "badge": "true", "sound": "true", "alert": "true", "ecb": "onNotificationAPN" }); // required!
+               }
+           }
+           catch (err) {
+               txt = "There was an error on this page.\n\n";
+               txt += "Error description: " + err.message + "\n\n";
+               alert(txt);
+           }
+       };
+
+       // handle GCM notifications for Android
+       function onNotificationGCM(e) {
+           switch (e.event) {
+               case 'registered':
+                   if (e.regid.length > 0) {
+                       alert(e.regid);
+                       storeToken(e.regid);
+                   }
+                   break;
+
+               case 'message':
+                   if (e.foreground) {
+                       var my_media = new Media("beep.wav");
+                       my_media.play();
+                   }
+                   else {
+                       // otherwise we were launched because the user touched a notification in the notification tray.
+                   }
+
+                   break;
+
+               case 'error':
+                   break;
+               default:
+                   break;
+           }
+       }
+
+/*       function alertDismissed() {
            // do something
        }
 
@@ -17,7 +67,7 @@
                alertDismissed,         // callback
                'Game Over',            // title
                'Done'                  // buttonName
-       );
+       );*/
 
 /*        function addContact(){
             var dc = navigator.contacts.create();
