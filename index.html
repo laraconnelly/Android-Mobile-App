@@ -1,569 +1,146 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>South Hill Pizza</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="js/respond.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="css/custom.css">
+    <title>Capture Photo</title>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1"/>
 
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"/>
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="js/cordova.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/cordova-2.7.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script>
+
+        function addContact(){
+            var dc = navigator.contacts.create();
+            dc.displayName = "Daves Pizza";
+            var name = new ContactName();
+            name.givenName = "Dave";
+            name.familyName = "Pizza";
+            dc.name = name;
+            var phoneNumbers = [];
+            phoneNumbers[0] = new ContactField('work', '212-555-1234', false);
+            dc.phoneNumbers = phoneNumbers;
+
+            // save
+            dc.save();
+        }
+
+        var deviceReadyDeferred = $.Deferred();
+        var jqmReadyDeferred = $.Deferred();
+
+        document.addEventListener("deviceReady", deviceReady, false);
+
+        function deviceReady() {
+            deviceReadyDeferred.resolve();
+        }
+
+        $(document).one("mobileinit", function () {
+            jqmReadyDeferred.resolve();
+        });
+
+        $.when(deviceReadyDeferred, jqmReadyDeferred).then(doWhenBothFrameworksLoaded);
+
+        function doWhenBothFrameworksLoaded() {
+            var    pictureSource=navigator.camera.PictureSourceType;
+            var    destinationType=navigator.camera.DestinationType;
+
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoDataSuccess(imageData) {
+                // Get image handle
+                //
+                var smallImage = document.getElementById('smallImage');
+
+                // Unhide image elements
+                //
+                smallImage.style.display = 'block';
+
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                smallImage.src = "data:image/jpeg;base64," + imageData;
+            }
+
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoFileSuccess(imageData) {
+                // Get image handle
+                console.log(JSON.stringify(imageData));
+
+                // Get image handle
+                //
+                var smallImage = document.getElementById('smallImage');
+
+                // Unhide image elements
+                //
+                smallImage.style.display = 'block';
+
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                smallImage.src = imageData;
+            }
+
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoURISuccess(imageURI) {
+                // Uncomment to view the image file URI
+                // console.log(imageURI);
+
+                // asdfGet image handle
+                //
+                var largeImage = document.getElementById('largeImage');
+
+                // Unhide image elements
+                //
+                largeImage.style.display = 'block';
+
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                largeImage.src = imageURI;
+            }
+
+            // A button will call this function
+            //
+            function capturePhotoWithData() {
+                // Take picture using device camera and retrieve image as base64-encoded string
+                navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50 });
+            }
+
+            $("#capture").on("click", function() {
+                navigator.camera.getPicture(onPhotoFileSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
+            });
+
+            // A button will call this function
+            //
+            function getPhoto(source) {
+                // Retrieve image file location from specified source
+                navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                    destinationType: destinationType.FILE_URI,
+                    sourceType: source });
+            }
+
+            // Called if something bad happens.
+            //
+            function onFail(message) {
+                alert('Failed because: ' + message);
+            }
+
+            $("#captureWithData").on("click", function(){
+                capturePhotoWithData();
+            })
+
+        }
+    </script>
 
 
 </head>
-
 <body>
-
-    <!-- home -->
-    <!-- *************************************************************************** -->
-    <div data-role="page" id="home">
-
-        <div data-role="header" data-id="navbar" data-position="fixed">
-            <header class="row text-center">
-                <div>
-                    <h1>South Hill Pizza</h1>
-                </div>
-            </header>
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#home" class="ui-btn-active ui-state-persist">Home</a></li>
-                    <li><a href="#callus">Call Us</a></li>
-                    <li><a href="#menu">Menu</a></li>
-                    <li><a href="#order">Order</a></li>
-                    <li><a href="#location">Location</a></li>
-                    <li><a href="#aboutus">About</a></li>
-                    <li><a href="#camera">Camera</a></li>
-                </ul>
-            </div>
-            <!--Navigation-->
-        </div>
-
-        <div role="main" class="ui-content">
-
-            <div class="row text-center">
-                <h2>Food for the whole family</h2>
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-4 col-sm-6">
-                    <img src="img/pizzaria.jpg" class="img-responsive" alt="South Hill Pizza"/>
-                </div>
-
-                <div class="col-md-4 col-sm-6 ">
-                    <p>South Hill Pizza is a family owned restaurant. It is a long established fact that a reader will be
-                        distracted by the readable content of a page when looking at its layout. The point of using Lorem
-                        Ipsum
-                        is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here,
-                        content
-                        here', making it look like readable English.</p>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                    <p>2901 S Grand Blvd, Spokane WA<br/>509.747.7000</p>
-                </div>
-            </div>
-            <!-- /content -->
-
-            <div data-role="footer" data-position="fixed">
-                Connelly Incorporated &copy;2014
-            </div>
-            <!-- /footer -->
-        </div>
-    </div>
-        <!-- /page home-->
-
-    <!-- call us -->
-    <!-- *************************************************************************** -->
-    <div data-role="page" id="callus">
-
-        <div data-role="header" data-id="navbar" data-position="fixed">
-            <header class="row text-center">
-                <div>
-                    <h1>South Hill Pizza</h1>
-                </div>
-            </header>
-
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#callus" class="ui-btn-active ui-state-persist">Call Us</a></li>
-                    <li><a href="#menu">Menu</a></li>
-                    <li><a href="#order">Order</a></li>
-                    <li><a href="#location">Location</a></li>
-                    <li><a href="#aboutus">About</a></li>
-                    <li><a href="#camera">Camera</a></li>
-                </ul>
-            </div>
-            <!--Navigation-->
-        </div>
-
-        <div role="main" class="ui-content">
-
-            <div class="row text-center">
-                <h2>Call Us</h2>
-                <p>Call us to order your pizza today!</p>
-                <a href="tel:509-747-7000">509-747-7000</a>
-            </div>
-            <!-- /content -->
-
-            <div data-role="footer" data-position="fixed">
-                Connelly Incorporated &copy;2014
-            </div>
-            <!-- /footer -->
-        </div>
-    </div>
-    <!-- /page callus-->
-
-    <!--  menu -->
-    <!-- *************************************************************************** -->
-    <div data-role="page" id="menu">
-
-        <div data-role="header" data-id="navbar" data-position="fixed">
-            <header class="row text-center">
-                <div>
-                    <h1>South Hill Pizza</h1>
-                </div>
-            </header>
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#callus">Call Us</a></li>
-                    <li><a href="#menu" class="ui-btn-active ui-state-persist">Menu</a></li>
-                    <li><a href="#order">Order</a></li>
-                    <li><a href="#location">Location</a></li>
-                    <li><a href="#aboutus">About</a></li>
-                    <li><a href="#camera">Camera</a></li>
-                </ul>
-            </div>
-            <!--Navigation-->
-        </div>
-
-        <div role="main" class="ui-content">
-
-            <div class="row text-center">
-                <h2>Our Menu</h2>
-            </div>
-
-            <div>
-
-                <label for="crust">Crust</label>
-                <div data-role="fieldcontain" data-product="crust">
-                    <select name="crust" id="crust" class="form-control">
-                        <option data-name="original" data-price="10.00">Original  $10.00</option>
-                        <option data-name="thin" data-price="10.00">Thin  $10.00</option>
-                        <option data-name="pan" data-price="12.00">Pan  $12.00</option>
-                    </select>
-                </div>
-
-
-                    <div class="form-group">
-                        <!--<p>Toppings</p>-->
-                        <div data-role="fieldcontain" data-product="toppings">
-                            <fieldset data-role="controlgroup">
-                                <legend>Toppings:</legend>
-                                <input type="checkbox" name="topping" id="pepperoni" data-name="pepperoni" data-price="2.00" />
-                                <label for="pepperoni">Pepperoni  $2.00</label>
-                                <input type="checkbox" name="topping" id="sausage" data-name="sausage" data-price="2.00" />
-                                <label for="sausage">Sausage  $2.00</label>
-                                <input type="checkbox" name="topping" id="onion" data-name="onion" data-price="2.00" />
-                                <label for="onion">Onion  $2.00</label>
-                                <input type="checkbox" name="topping" id="mushroom" data-name="mushroom" data-price="2.00" />
-                                <label for="mushroom">Mushroom  $2.00</label>
-                                <input type="checkbox" name="topping" id="olive" data-name="olive" data-price="2.00" />
-                                <label for="olive">Olive  $2.00</label>
-                            </fieldset>
-                        </div>
-                    </div>
-
-                <label for="drinks">Drinks</label>
-                <div data-role="fieldcontain" data-product="drinks">
-                    <select name="drinks" id="drinks" class="form-control">
-                        <option data-name="none" data-price="0">Select a Beverage</option>
-                        <option data-name="coke" data-price="1.00">Coke  $1.00</option>
-                        <option data-name="diet" data-price="1.00">Diet Coke  $1.00</option>
-                        <option data-name="rootbeer" data-price="1.00">Rootbeer  $1.00</option>
-                        <option data-name="sprite" data-price="1.00">Sprite  $1.00</option>
-                    </select>
-                </div>
-
-                <button class="btnCart">Add To Cart Below</button>
-            </div>
-            <!-- /content -->
-
-            <div id="cartDiv" class="cart"></div>
-
-            <div data-role="footer" data-position="fixed">
-                Connelly Incorporated &copy;2014
-            </div>
-            <!-- /footer -->
-        </div>
-    </div>
-    <!-- /page menu-->
-
-    <!-- order -->
-    <!-- *************************************************************************** -->
-    <div data-role="page" id="order">
-
-        <div data-role="header" data-id="navbar" data-position="fixed">
-            <header class="row text-center">
-                <div>
-                    <h1>South Hill Pizza</h1>
-                </div>
-            </header>
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#callus">Call Us</a></li>
-                    <li><a href="#menu">Menu</a></li>
-                    <li><a href="#order" class="ui-btn-active ui-state-persist">Order</a></li>
-                    <li><a href="#location">Location</a></li>
-                    <li><a href="#aboutus">About</a></li>
-                    <li><a href="#camera">Camera</a></li>
-                </ul>
-            </div>
-            <!--Navigation-->
-        </div>
-
-        <div role="main" class="ui-content">
-
-            <div class="row text-center">
-                <h2>Order your Pizza</h2>
-            </div>
-
-            <div class="row">
-
-            <div>
-                <div id="orderDiv"  class="cart">
-                    <h4>Please Create Your Order on our Menu Page</h4>
-                </div>
-                <div>
-                    <p><button id="save">Save as Favorite</button></p>
-                </div>
-                <div>
-                    <p><button id="buy">Buy Now</button></p>
-                </div>
-            </div>
-
-              <div id="favDiv"  class="cart">
-                  <h4>Your Favorite Order</h4>
-              </div>
-
-            </div>
-            <!-- /content -->
-
-            <div data-role="footer" data-position="fixed">
-                Connelly Incorporated &copy;2014
-            </div>
-            <!-- /footer -->
-        </div>
-    </div>
-    <!-- /page order-->
-
-    <!-- location -->
-    <!-- *************************************************************************** -->
-    <div data-role="page" id="location">
-
-        <div data-role="header" data-id="navbar" data-position="fixed">
-            <header class="row text-center">
-                <div>
-                    <h1>South Hill Pizza</h1>
-                </div>
-            </header>
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#callus">Call Us</a></li>
-                    <li><a href="#menu">Menu</a></li>
-                    <li><a href="#order">Order</a></li>
-                    <li><a href="#location" class="ui-btn-active ui-state-persist">Location</a></li>
-                    <li><a href="#aboutus">About</a></li>
-                    <li><a href="#camera">Camera</a></li>
-                </ul>
-            </div>
-            <!--Navigation-->
-        </div>
-
-        <div role="main" class="ui-content">
-
-            <div class="row text-center">
-                <h2>How to get to South Hill Pizza</h2>
-            </div>
-
-            <script>
-                navigator.geolocation.getCurrentPosition(function (pos) {
-                    var lat = pos.coords.latitude;
-                    var lng = pos.coords.longitude;
-                    //console.log(lat + "  :  " + lng);
-                    $("#lat").text(lat);
-                    $("#lng").text(lng);
-                    var url = '<a href="http://maps.google.com/maps?q=' + lat + ',' + lng + '">Your Location</a>';
-                    //console.log(url);
-                    $("#url").html(url);
-
-                    var daddr = "2901+S+Grand+Blvd,+Spokane,+WA+99203";
-                    var saddr = lat + ',' + lng;
-                    var urlDirection = '<a href="http://maps.google.com/maps?daddr=' + daddr + '&saddr=' + saddr + '">Directions to South Hill Pizza</a>';
-                    $("#urldir").html(urlDirection);
-
-                    var map = '<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=d&amp;source=s_d&amp;saddr=' + saddr + '&amp;daddr=' + daddr + '&amp;hl=en&amp;geocode=Fa7N1gIdcocA-Snjv5T7jyKeVDGUaBEMljmYMg%3BFY6s1wIdd7IA-Sl16BgaKBmeVDGSF4-H7rV7wQ&amp;aq=0&amp;oq=pizz&amp;sll=47.700982,-117.386169&amp;sspn=0.270335,0.676346&amp;mra=iwd&amp;ie=UTF8&amp;t=m&amp;ll=47.660307,-117.406769&amp;spn=0.057077,0.023172&amp;output=embed"></iframe><br /><small><a href="https://maps.google.com/maps?f=d&amp;source=embed&amp;saddr=25th+%26+lamonte&amp;daddr=' + daddr + '&amp;hl=en&amp;geocode=Fa7N1gIdcocA-Snjv5T7jyKeVDGUaBEMljmYMg%3BFY6s1wIdd7IA-Sl16BgaKBmeVDGSF4-H7rV7wQ&amp;aq=0&amp;oq=pizz&amp;sll=47.700982,-117.386169&amp;sspn=0.270335,0.676346&amp;mra=iwd&amp;ie=UTF8&amp;t=m&amp;ll=47.660307,-117.406769&amp;spn=0.057077,0.023172" style="color:#0000FF;text-align:left">View Larger Map</a></small>'
-                    $("#directionMap").html(map);
-
-                });
-            </script>
-
-            <span id="url"></span><br/>
-            <span id="urldir"></span>
-            <br/>
-            <div id="directionMap"></div>
-
-            <!-- /content -->
-
-            <div data-role="footer" data-position="fixed">
-                Connelly Incorporated &copy;2014
-            </div>
-            <!-- /footer -->
-        </div>
-    </div>
-    <!-- /page location-->
-
-    <!-- about us -->
-    <!-- *************************************************************************** -->
-    <div data-role="page" id="aboutus">
-
-        <div data-role="header" data-id="navbar" data-position="fixed">
-            <header class="row text-center">
-                <div>
-                    <h1>South Hill Pizza</h1>
-                </div>
-            </header>
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#callus">Call Us</a></li>
-                    <li><a href="#menu">Menu</a></li>
-                    <li><a href="#order">Order</a></li>
-                    <li><a href="#location">Location</a></li>
-                    <li><a href="#aboutus" class="ui-btn-active ui-state-persist">About Us</a></li>
-                    <li><a href="#camera">Camera</a></li>
-                </ul>
-            </div>
-            <!--Navigation-->
-        </div>
-
-        <div role="main" class="ui-content">
-
-            <div class="row text-center">
-                <h2>About Us</h2>
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-4 col-sm-6">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                        but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
-                        in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                </div>
-
-                <div class="col-md-4 col-sm-6 ">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                        but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
-                        in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                        but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
-                        in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                </div>
-            </div>
-            <!-- /content -->
-
-            <div data-role="footer" data-position="fixed">
-                Connelly Incorporated &copy;2014
-            </div>
-            <!-- /footer -->
-        </div>
-    </div>
-    <!-- /page aboutus-->
-
-
-    <!-- camera -->
-    <!-- *************************************************************************** -->
-    <div data-role="page" id="camera">
-
-        <div data-role="header" data-id="navbar" data-position="fixed">
-            <header class="row text-center">
-                <div>
-                    <h1>South Hill Pizza</h1>
-                </div>
-            </header>
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#callus">Call Us</a></li>
-                    <li><a href="#menu">Menu</a></li>
-                    <li><a href="#order">Order</a></li>
-                    <li><a href="#location">Location</a></li>
-                    <li><a href="#aboutus">About Us</a></li>
-                    <li><a href="#camera" class="ui-btn-active ui-state-persist">Camera</a></li>
-                </ul>
-            </div>
-            <!--Navigation-->
-        </div>
-
-        <div role="main" class="ui-content">
-
-            <div class="row text-center">
-                <h2>About Us</h2>
-            </div>
-
-            <div class="row">
-<!--<script>
-                function onSuccess(heading) {
-                alert('Heading: ' + heading.magneticHeading);
-                };
-
-                function onError(error) {
-                alert('CompassError: ' + error.code);
-                };
-
-                //navigator.compass.getCurrentHeading(onSuccess, onError);
-</script>-->
-            </div>
-            <!-- /content -->
-
-            <div data-role="footer" data-position="fixed">
-                Connelly Incorporated &copy;2014
-            </div>
-            <!-- /footer -->
-        </div>
-    </div>
-    <!-- /page camera-->
-
-<script>
-    // github.com
-    // https://build.phonegap.com/people/sign_in
-        // new app...paste in link to phonegap folder
-    // in php storm...add/commit/push
-    // get phonegap js file for android (cordova)  put in js file.
-
-</script>
-
-<script>
-
-    var order = new Object();
-    order.topping = new Array();
-
-    function displayCart(){
-
-        var cartDiv = $('#cartDiv');
-        var orderDiv = $('#orderDiv');
-        var cartStr = "";
-        var orderCartStr = "";
-
-        cartDiv.html("");  //wipe out previous html
-        orderDiv.html("");
-
-        cartStr = "<br/><h4>Your Cart</h4>";
-        cartStr += "<p>Crust: " + order.crust + "</p>";
-        if(order.topping.length){
-            cartStr += "<p>Toppings: <br/>";
-            for(var i in order.topping){
-                cartStr += order.topping[i] + "<br/>";
-            }
-            cartStr += "</p>";
-        }
-        if(order.drink != "none"){
-            cartStr += "<p>Drink: " + order.drink + "</p>";
-        }
-
-        cartStr += "<p>Total: $" + order.subtotal.toFixed(2) + "</p>";
-        orderCartStr = cartStr + '<a href="#menu" class="ui-btn-active ui-state-persist"><button id="toMenu" class="btn btn-default">Return to Menu Page</button></a>';;
-        cartStr += '<a href="#order" class="ui-btn-active ui-state-persist"><button id="toOrder" class="btn btn-default">Proceed to Order Page</button></a>';
-
-        cartDiv.append(cartStr);
-        orderDiv.append(orderCartStr);
-        $('#buy').parent().show();
-    }
-
-    function loadFav(){
-        var favStr;
-        var favDiv = $('#favDiv');
-        favDiv.html("");  //wipe out previous
-
-        favStr =  "<br/><h4>Your Favorite Order</h4>";
-        favStr += "<p>Crust: " + localStorage.getItem('crust',order.crust) + "</p><br/>";
-        favStr += "<p>Toppings: " + localStorage.getItem('topping',order.topping) + "</p><br/>";
-        favStr += "<p>Drink: " + localStorage.getItem('drink',order.drink) + "</p><br/>";
-
-        favDiv.append(favStr);
-    }
-
-
-
-    $(document).ready(function () {
-
-        loadFav();
-        $('#buy').parent().hide();
-
-        $('.btnCart').on("click", function(event){
-
-            var subtotal = 0;
-
-            order.crust = $('#crust option:selected').data("name")
-            subtotal += ($('#crust option:selected').data("price") * 1);
-            order.drink = $('#drinks option:selected').data("name")
-            subtotal += ($('#drinks option:selected').data("price") * 1);
-            //toppings
-            var $toppings = $("[type=checkbox]:checked");
-            $toppings.each(function(){
-                order.topping.push($(this).data("name"));
-                subtotal += $(this).data("price") * 1;
-            });
-
-            order.subtotal = subtotal;
-            $('#buy').parent().show();
-            displayCart();
-        });
-
-        $('#buy').on("click", function(event){
-            //do a post on a form to send data to the back end
-            //key:value pairs
-            var buyUrl = "&crust=" + order.crust + "&drink=" + order.drink + "&toppings=" + order.topping;
-            //console.log("http://cis217-4.lconnelly.com/order.php?" + buyUrl);
-            console.log('order.php?' + buyUrl);
-            $.getJSON('order.php?' + buyUrl, function(data){
-                //fired off email
-                $('#orderDiv').append(data);
-            })
-            $('#buy').parent().hide();
-        })
-
-        $('#save').on("click", function(event){
-
-            localStorage.setItem('crust',order.crust);
-            localStorage.setItem('topping',order.topping);
-            localStorage.setItem('drink',order.drink);
-
-            loadFav();
-
-        })
-
-    });
-
-</script>
+<button id="captureWithData">Capture Photo With Image Data</button> <br>
+<button id="capture">Capture Photo With Image File URI</button> <br>
+<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
+<button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
+<button onclick="addContact();">Add Contact</button>
+<img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
+<img style="display:none;" id="largeImage" src="" />
 </body>
 </html>
