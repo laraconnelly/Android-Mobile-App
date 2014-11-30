@@ -8,7 +8,18 @@
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
    <script>
 
-        function addContact(){
+       function alertDismissed() {
+           // do something
+       }
+
+       navigator.notification.alert(
+               'You are the winner!',  // message
+               alertDismissed,         // callback
+               'Game Over',            // title
+               'Done'                  // buttonName
+       );
+
+/*        function addContact(){
             var dc = navigator.contacts.create();
             dc.displayName = "Daves Pizza";
             var name = new ContactName();
@@ -129,7 +140,7 @@
                 capturePhotoWithData();
             })
 
-        }
+        }*/
     </script>
 
 
@@ -137,9 +148,9 @@
 <body>
 <button id="captureWithData">Capture Photo With Image Data</button> <br>
 <button id="capture">Capture Photo With Image File URI</button> <br>
-<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
+<!--<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
 <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
-<button onclick="addContact();">Add Contact</button>
+<button onclick="addContact();">Add Contact</button>-->
 <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
 <img style="display:none;" id="largeImage" src="" />
 </body>
