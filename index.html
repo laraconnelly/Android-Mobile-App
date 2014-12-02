@@ -12,31 +12,6 @@
     <script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script>
-        // Android Notification
-        // Wait for device API libraries to load
-        document.addEventListener("deviceready", onDeviceReady, false);
-
-        // device APIs are available
-        function onDeviceReady() {
-            // Empty
-        }
-
-        function alertDismissed() {
-            // do nothing
-        }
-
-        function showAlert() {
-            alert("Lara1");
-            navigator.notification.alert(
-                    'This order has been saved as your favorite!',  // message
-                    alertDismissed,         // callback
-                    "We'll remember",            // title
-                    'Done'                  // buttonName
-            );
-        }
-        // End Android Notification
-    </script>
 
 </head>
 
@@ -261,8 +236,7 @@
                     <h4>Please Create Your Order on our Menu Page</h4>
                 </div>
                 <div>
-                    <p><button id="save" onclick="showAlert(); return false;">Save as Favorite</button></p>
-                    <p><a href="#" onclick="showAlert(); return false;">Show Alert</a></p>
+                    <p><button id="save">Save as Favorite</button></p>
                 </div>
                 <div>
                     <p><button id="buy">Buy Now</button></p>
@@ -467,11 +441,28 @@
         favDiv.append(favStr);
     }
 
+    // Android Notification
+    // Wait for device API libraries to load
+    document.addEventListener("deviceready", onDeviceReady, false);
 
+    // device APIs are available
+    function onDeviceReady() {
+        // Empty
+    }
 
+    function alertDismissed() {
+        // do nothing
+    }
 
-
-
+    function showAlert() {
+        navigator.notification.alert(
+                'This order has been saved as your favorite!',  // message
+                alertDismissed,         // callback
+                "We'll remember",            // title
+                'Done'                  // buttonName
+        );
+    }
+    // End Android Notification
 
 
     $(document).ready(function () {
