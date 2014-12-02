@@ -12,6 +12,31 @@
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"/>
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        // Android Notification
+        // Wait for device API libraries to load
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        // device APIs are available
+        function onDeviceReady() {
+            // Empty
+        }
+
+        function alertDismissed() {
+            // do nothing
+        }
+
+        function showAlert() {
+            alert("Lara1");
+            navigator.notification.alert(
+                    'This order has been saved as your favorite!',  // message
+                    alertDismissed,         // callback
+                    "We'll remember",            // title
+                    'Done'                  // buttonName
+            );
+        }
+        // End Android Notification
+    </script>
 
 </head>
 
@@ -444,29 +469,7 @@
 
 
 
-    // Android Notification
-    // Wait for device API libraries to load
-    document.addEventListener("deviceready", onDeviceReady, false);
 
-    // device APIs are available
-    function onDeviceReady() {
-        // Empty
-    }
-
-    function showAlert() {
-        alert("Lara1");
-        navigator.notification.alert(
-                'This order has been saved as your favorite!',  // message
-                alertDismissed,         // callback
-                "We'll remember",            // title
-                'Done'                  // buttonName
-        );
-    }
-
-    function alertDismissed() {
-        // do nothing
-    }
-    // End Android Notification
 
 
 
