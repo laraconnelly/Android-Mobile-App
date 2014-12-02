@@ -442,6 +442,7 @@
     }
 
     function showAlert() {
+        alert("Lara1");
         navigator.notification.alert(
                 'This order has been saved as your favorite!',  // message
                 alertDismissed,         // callback
@@ -500,10 +501,18 @@
             localStorage.setItem('topping',order.topping);
             localStorage.setItem('drink',order.drink);
 
-            loadFav();
             showAlert();
+            loadFav();
 
         })
+
+        // Wait for device API libraries to load
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        // device APIs are available
+        function onDeviceReady() {
+            // Empty
+        }
 
     });
 
