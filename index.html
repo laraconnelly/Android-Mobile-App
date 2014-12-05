@@ -449,7 +449,7 @@
 
     // Android Notification
     // Wait for device API libraries to load
-    document.addEventListener("deviceready", onDeviceReady, false);
+    //document.addEventListener("deviceready", onDeviceReady, false);
 
     // device APIs are available
     function onDeviceReady() {
@@ -506,7 +506,7 @@
             var buyUrl = "&crust=" + order.crust + "&drink=" + order.drink + "&toppings=" + order.topping;
             //console.log("http://cis217-4.lconnelly.com/order.php?" + buyUrl);
             //console.log('order.php?' + buyUrl);
-            $.getJSON('https://github.com/laraconnelly/mobile1/blob/master/order.php?' + buyUrl, function(data){
+            $.getJSON('order.php?' + buyUrl, function(data){
                 //fired off email
                 $('#orderDiv').append(data);
             })
