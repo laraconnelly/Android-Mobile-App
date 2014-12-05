@@ -504,8 +504,8 @@
             //key:value pairs
             var buyUrl = "&crust=" + order.crust + "&drink=" + order.drink + "&toppings=" + order.topping;
             //console.log("http://cis217-4.lconnelly.com/order.php?" + buyUrl);
-            console.log('order.php?' + buyUrl);
-            $.getJSON('order.php?' + buyUrl, function(data){
+            //console.log('order.php?' + buyUrl);
+            $.getJSON('https://github.com/laraconnelly/mobile1/blob/master/order.php?' + buyUrl, function(data){
                 //fired off email
                 $('#orderDiv').append(data);
             })
