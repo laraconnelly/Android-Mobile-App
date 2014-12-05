@@ -289,7 +289,7 @@
 
         <script>
             navigator.geolocation.getCurrentPosition(function (pos) {
-                alert("Map");
+                //alert("Map");
                 var lat = pos.coords.latitude;
                 var lng = pos.coords.longitude;
                 //console.log(lat + "  :  " + lng);
@@ -507,7 +507,7 @@
             var buyUrl = "&crust=" + order.crust + "&drink=" + order.drink + "&toppings=" + order.topping;
             //console.log("http://cis217-4.lconnelly.com/order.php?" + buyUrl);
             //console.log('order.php?' + buyUrl);
-            $.getJSON('order.php?' + buyUrl, function(data){
+            $.getJSON('http://cis217-4.lconnelly.com/order.php?' + buyUrl, function(data){
                 //fired off email
                 $('#orderDiv').append(data);
             })
